@@ -1,0 +1,59 @@
+---
+name: Build all container images
+on:
+  schedule:
+    - cron: "05 10 * * *" # 10:05am UTC everyday
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - "README.md"
+      - ".github/workflows/**"
+      - "system_files/**"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - "README.md"
+      - ".github/workflows/**"
+      - "system_files/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  build-image-main:
+    uses: ./.github/workflows/build-main.yml
+    secrets: inherit
+    with:
+      desktop: cosmic
+      edition: main
+
+  build-image-gnome:
+      needs: build-image-main
+      uses: ./.github/workflows/build-main.yml
+      secrets: inherit
+      with:
+        desktop: gnome
+        edition: main
+
+  build-image-niri:
+    needs: build-image-gnome
+    uses: ./.github/workflows/build-main.yml
+    secrets: inherit
+    with:
+      desktop: niri
+      edition: main
+      
+  build-image-kde:
+    needs: build-image-niri
+    uses: ./.github/workflows/build-main.yml
+    secrets: inherit
+    with:
+      desktop: kde
+      edition: main

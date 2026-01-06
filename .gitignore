@@ -1,0 +1,7 @@
+cosign.key
+_build_*
+output
+_build-*/**
+build-iso-local.json
+build_iso.sh
+spacefin.tar
