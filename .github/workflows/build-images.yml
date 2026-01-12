@@ -1,8 +1,6 @@
 ---
 name: Build all container images
 on:
-  schedule:
-    - cron: "05 10 * * *" # 10:05am UTC everyday
   pull_request:
     branches:
       - main
